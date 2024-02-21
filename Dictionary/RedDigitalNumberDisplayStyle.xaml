@@ -1,0 +1,51 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+                     xmlns:cvt="clr-namespace:ProductMonitor.Resource.Converters"
+                     xmlns:local="clr-namespace:ProductMonitor.UserControls"
+                     xmlns:sys="clr-namespace:System;assembly=netstandard"
+                     mc:Ignorable="d">
+
+    <!--该模板的主要作用就是将数组显示出来，按照多位数码管的样式显示
+        如果想要显示Int类型，请使用转换器转换<IntCvtDigitalarray>
+    -->
+    
+
+    <!--对象模板-->
+    <DataTemplate x:Key="machineCount" >
+        <Border Background="Red">
+            <TextBlock Padding="5" Text="{Binding}" FontFamily="../Resource/Fonts/#digital display" 
+                                Foreground="White" FontSize="20"
+                               VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Border>
+    </DataTemplate>
+
+    <!--演示的对象模板-->
+    <DataTemplate x:Key="machineCountV" >
+        <Border Background="Red">
+            <TextBlock Padding="5" Text="0" FontFamily="../Resource/Fonts/#digital display"
+                                Foreground="White" FontSize="20"
+                               VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Border>
+    </DataTemplate>
+
+    
+    <!--模板-->
+    <Style TargetType="ListBox" x:Key="RedDigitalNumberStyle">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="BorderBrush" Value="Transparent"/>
+        <Setter Property="ItemTemplate" Value="{StaticResource machineCount}"/>
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <!--重载该模板是为了将数字横起来显示-->
+                <ItemsPanelTemplate>
+                    <WrapPanel VerticalAlignment="Center" Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+
+
+</ResourceDictionary>

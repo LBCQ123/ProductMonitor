@@ -1,0 +1,226 @@
+﻿<UserControl x:Class="ProductMonitor.UserControls.MonitorUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:cvt="clr-namespace:ProductMonitor.Resource.Converters"
+             xmlns:local="clr-namespace:ProductMonitor.UserControls"
+             xmlns:sys="clr-namespace:System;assembly=netstandard"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             mc:Ignorable="d" 
+             Height="675" Width="1200"
+             d:Background="#FF285173">
+    <UserControl.Resources>
+        <cvt:DateCvtWeekday x:Key="DateWeek"/>
+        <cvt:IntCvtDigitalarray x:Key="IntDigital"/>
+    </UserControl.Resources>
+
+    <Grid Margin="15 0 0 0">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition />
+            <RowDefinition Height="150"/>
+        </Grid.RowDefinitions>
+        <!--第一行-->
+        <Grid Grid.Row="0" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <!--第一列 日期-->
+            <StackPanel Grid.Column="0" Orientation="Horizontal">
+                <TextBlock Text="{Binding TimeNow,StringFormat='HH:mm'}" Foreground="White" 
+                       d:Text="15:56"
+                       FontSize="50" VerticalAlignment="Center"
+                       FontFamily="../Resource/Fonts/#digital display"/>
+                <StackPanel Margin="15 0 0 0"
+                    Orientation="Vertical" VerticalAlignment="Center">
+                    <TextBlock FontSize="16" Text="{Binding TimeNow,StringFormat='yyyy-MM-dd'}"
+                               d:Text="2024-02-19" Foreground="White"/>
+                    <TextBlock FontSize="16" Text="{Binding TimeNow,Converter={StaticResource DateWeek}}"
+                               d:Text="星期一" HorizontalAlignment="Right" Foreground="White" />
+                </StackPanel>
+            </StackPanel>
+
+            <!--第二列-->
+            <StackPanel Margin="15 0" Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
+                <!--机台总数-->
+                <TextBlock VerticalAlignment="Center" Foreground="White" Text="机台&#13;总数 "/>
+                <ListBox d:ItemsSource="{d:SampleData ItemCount=3}" 
+                         d:ItemTemplate="{StaticResource machineCountV}"
+                         Style="{StaticResource RedDigitalNumberStyle}"
+                         ItemsSource="{Binding MachineCount,Converter={StaticResource IntDigital}}">
+                </ListBox>
+
+                <!--生产计数-->
+                <TextBlock VerticalAlignment="Center" Foreground="White" Text="生产&#13;计数 "/>
+                <ListBox d:ItemsSource="{d:SampleData ItemCount=4}" 
+                         d:ItemTemplate="{StaticResource machineCountV}"
+                         Style="{StaticResource RedDigitalNumberStyle}"
+                         ItemsSource="{Binding ProductCount,Converter={StaticResource IntDigital}}">
+                </ListBox>
+
+                <!--不良计数-->
+                <TextBlock VerticalAlignment="Center" Foreground="White" Text="不良&#13;计数 "/>
+                <ListBox d:ItemsSource="{d:SampleData ItemCount=2}" Margin="0,-2" 
+                         d:ItemTemplate="{StaticResource machineCountV}"
+                         Style="{StaticResource RedDigitalNumberStyle}"
+                         ItemsSource="{Binding BadCount,Converter={StaticResource IntDigital}}">
+                </ListBox>
+            </StackPanel>
+            
+            <Button Grid.Column="1" Margin="5" HorizontalAlignment="Right" Style="{StaticResource BtnStyle}"
+                    Foreground="White" FontSize="20" Content="配置" Tag="&#xe604;"/>
+
+        </Grid>
+
+        <!--第二行-->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <UniformGrid Grid.Column="0" Columns="1">
+                <!--实时监控-->
+                <GroupBox Header="环境" Style="{StaticResource GroupBoxStyle}">
+                    <ItemsControl ItemsSource="{Binding EnviromentList}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="4" VerticalAlignment="Center"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Vertical" Margin="5">
+                                    <TextBlock FontSize="20" Foreground="Cyan" 
+                                Text="{Binding EnvirItemValue}" HorizontalAlignment="Center"/>
+                                    <TextBlock FontSize="12" Foreground="White" 
+                                Text="{Binding EnvirItemName}" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </GroupBox>
+                
+                <GroupBox Header="产能" Style="{StaticResource GroupBoxStyle}">
+                    <Grid>
+                        <lvc:CartesianChart>
+                            <lvc:CartesianChart.AxisX>
+                                <lvc:Axis Labels="8:00,9:00,10:00,11:00,12:00,13:00,14:00,15:00,16:00">
+                                    <lvc:Axis.Separator>
+                                        <lvc:Separator Step="1" StrokeThickness="0"/>
+                                    </lvc:Axis.Separator>
+                                </lvc:Axis>
+                            </lvc:CartesianChart.AxisX>
+                            <lvc:CartesianChart.AxisY>
+                                <lvc:Axis MinValue="0" MaxValue="500">
+                                    <lvc:Axis.Separator>
+                                        <lvc:Separator Step="100"/>
+                                    </lvc:Axis.Separator>
+                                </lvc:Axis>
+                            </lvc:CartesianChart.AxisY>
+                            
+                            <!--定义数据-->
+                            <lvc:CartesianChart.Series>
+                                <lvc:ColumnSeries Fill="LightBlue" MaxColumnWidth="10" Title="生产计数" Values="300,400,480,450,380,450,450,330,340"/>
+                                <lvc:ColumnSeries Fill="Red"       MaxColumnWidth="10" Title="不良计数" Values="50,20,8,30,80,20,50,100,0"/>
+                            </lvc:CartesianChart.Series>
+                        </lvc:CartesianChart>
+
+                        <!--图例Legend-->
+                        <StackPanel Orientation="Horizontal" 
+                                    HorizontalAlignment="Right"
+                                    VerticalAlignment="Top" Margin="0 -15 0 0">
+                            <Ellipse Width="10" Height="10" Fill="LightBlue"/>
+                            <TextBlock Text="生产计数" Foreground="White"/>
+                            <Ellipse Width="10" Height="10" Margin="10 0 0 0" Fill="Red"/>
+                            <TextBlock Text="不良计数" Foreground="White"/>
+                        </StackPanel>
+                        
+                    </Grid>
+                </GroupBox>
+                <GroupBox Header="质量" Style="{StaticResource GroupBoxStyle}">
+                    <lvc:CartesianChart>
+                        <lvc:CartesianChart.AxisX>
+                            <lvc:Axis Labels="1#,2#,3#,4#,5#,6#">
+                                <lvc:Axis.Separator>
+                                    <lvc:Separator Step="1" StrokeThickness="0"/>
+                                </lvc:Axis.Separator>
+                            </lvc:Axis>
+                        </lvc:CartesianChart.AxisX>
+                        <lvc:CartesianChart.AxisY>
+                            <lvc:Axis MinValue="0" MaxValue="15">
+                                <lvc:Axis.Separator>
+                                    <lvc:Separator Step="5"/>
+                                </lvc:Axis.Separator>
+                            </lvc:Axis>
+                        </lvc:CartesianChart.AxisY>
+
+                        <!--定义数据-->
+                        <lvc:CartesianChart.Series>
+                            <lvc:LineSeries Values="8,2,7,6,4,14" PointGeometrySize="8" Stroke="#ff2bedf1" Title="质量">
+                                <lvc:LineSeries.Fill>
+                                    <LinearGradientBrush StartPoint="0,0" EndPoint="0,1">
+                                        <GradientStop Color="#552bedf1" Offset="0"/>
+                                        <GradientStop Color="Transparent" Offset="1"/>
+                                    </LinearGradientBrush>
+                                </lvc:LineSeries.Fill>
+                            </lvc:LineSeries>
+                        </lvc:CartesianChart.Series>
+                    </lvc:CartesianChart>
+                </GroupBox>
+
+            </UniformGrid>
+
+            <!--第二行第二列-->
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Image Grid.Row="0" Source="../Resource/Images/device.png"/>
+                <StackPanel Grid.Row="1" Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal" Margin="10">
+                        <TextBlock Text="&#xe871;" Foreground="#99ffffff" FontFamily="../Resource/Fonts/#iconfont"/>
+                        <TextBlock Text="报警记录" Foreground="#99ffffff"/>
+                    </StackPanel>
+
+                    <!--报警列表-->
+                    <ItemsControl ItemsSource="{Binding AlarmList}" Margin="10 -4 0 0">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="10 4 0 4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="20"/>
+                                        <ColumnDefinition Width="30"/>
+                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="150"/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <Ellipse Grid.Column="0" Fill="IndianRed" Width="10" Height="10" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <TextBlock Grid.Column="1" Foreground="LightBlue" Text="{Binding Num}"/>
+                                    <TextBlock Grid.Column="2" Foreground="LightBlue" Text="{Binding Msg}"/>
+                                    <TextBlock Grid.Column="3" Foreground="LightBlue" Text="{Binding Time}"/>
+                                    <TextBlock Grid.Column="4" Foreground="LightBlue" Margin="10 0 0 0"
+                                               Text="{Binding Duratuin,StringFormat=时长{0}秒}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                </StackPanel>
+                
+                
+
+            </Grid>
+            
+        </Grid>
+        
+        
+        <!--第三行-->
+        
+        
+    </Grid>
+</UserControl>

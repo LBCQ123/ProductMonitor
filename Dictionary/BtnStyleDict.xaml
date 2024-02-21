@@ -1,0 +1,41 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Style x:Key="BtnStyle" TargetType="Button">
+        <Setter Property="Foreground" Value="#aaa"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border Name="border" Background="Transparent" Padding="5" BorderThickness="1">
+                        <Border.BorderBrush>
+                            <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                <LinearGradientBrush.GradientStops>
+                                    <GradientStop Offset="0" Color="Gray"/>
+                                    <GradientStop Offset="0.3" Color="White"/>
+                                    <GradientStop Offset="0.6" Color="White"/>
+                                    <GradientStop Offset="1.0" Color="Gray"/>
+                                </LinearGradientBrush.GradientStops>
+                            </LinearGradientBrush>
+                        </Border.BorderBrush>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <!--配置的图标-->
+                            <Label Foreground="{TemplateBinding Foreground}" FontSize="{TemplateBinding FontSize}" 
+                                   Content="{TemplateBinding Tag}" FontFamily="../Resource/Fonts/#iconfont" 
+                                   VerticalAlignment="Center"/>
+                            <!--显示的文字-->
+                            <ContentPresenter VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border" Property="Background" Value="LightGreen"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    
+    
+</ResourceDictionary>
