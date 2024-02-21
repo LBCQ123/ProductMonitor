@@ -7,6 +7,7 @@
              xmlns:local="clr-namespace:ProductMonitor.UserControls"
              xmlns:sys="clr-namespace:System;assembly=netstandard"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:userControl="clr-namespace:ProductMonitor.UserControls"
              mc:Ignorable="d" 
              Height="675" Width="1200"
              d:Background="#FF285173">
@@ -27,7 +28,7 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <!--第一列 日期-->
+            <!--第一行 日期-->
             <StackPanel Grid.Column="0" Orientation="Horizontal">
                 <TextBlock Text="{Binding TimeNow,StringFormat='HH:mm'}" Foreground="White" 
                        d:Text="15:56"
@@ -74,6 +75,8 @@
 
         </Grid>
 
+        
+        
         <!--第二行-->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -81,8 +84,10 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
+            
+            <!--第二行第一列-->
             <UniformGrid Grid.Column="0" Columns="1">
-                <!--实时监控-->
+                <!--第二行第一列第一行 实时监控-->
                 <GroupBox Header="环境" Style="{StaticResource GroupBoxStyle}">
                     <ItemsControl ItemsSource="{Binding EnviromentList}">
                         <ItemsControl.ItemsPanel>
@@ -102,7 +107,8 @@
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
                 </GroupBox>
-                
+
+                <!--第二行第一列第二行 产能监控-->
                 <GroupBox Header="产能" Style="{StaticResource GroupBoxStyle}">
                     <Grid>
                         <lvc:CartesianChart>
@@ -140,6 +146,8 @@
                         
                     </Grid>
                 </GroupBox>
+
+                <!--第二行第一列第三行 质量监控-->
                 <GroupBox Header="质量" Style="{StaticResource GroupBoxStyle}">
                     <lvc:CartesianChart>
                         <lvc:CartesianChart.AxisX>
@@ -176,19 +184,21 @@
             <!--第二行第二列-->
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="3*"/>
                 </Grid.RowDefinitions>
+                <!--第二行第二列第一行 图片-->
                 <Image Grid.Row="0" Source="../Resource/Images/device.png"/>
+
+                <!--第二行第二列第二行 报警列表-->
                 <StackPanel Grid.Row="1" Orientation="Vertical">
                     <StackPanel Orientation="Horizontal" Margin="10">
                         <TextBlock Text="&#xe871;" Foreground="#99ffffff" FontFamily="../Resource/Fonts/#iconfont"/>
-                        <TextBlock Text="报警记录" Foreground="#99ffffff"/>
+                        <TextBlock Text="报警记录" Foreground="#99ffffff" Margin="5 -1 0 0"/>
                     </StackPanel>
-
-                    <!--报警列表-->
-                    <ItemsControl ItemsSource="{Binding AlarmList}" Margin="10 -4 0 0">
+                    
+                    <ItemsControl ItemsSource="{Binding AlarmList}" Margin="10 -10 0 0">
                         <ItemsControl.ItemTemplate>
                             <DataTemplate>
                                 <Grid Margin="10 4 0 4">
@@ -209,14 +219,73 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-
+                    
                 </StackPanel>
-                
-                
+                <!--第二行第二列第三行 报警饼图-->
+                <GroupBox Grid.Row="2" Header="数据异常报警比例" Style="{StaticResource GroupBoxStyle}">
+                    <!--饼形图-->
+                    <!--定义数据标签-->
+                    <lvc:PieChart InnerRadius="45" Margin="10">
+                        <lvc:PieChart.Resources>
+                            <Style TargetType="lvc:PieSeries">
+                                <Setter Property="DataLabelsTemplate">
+                                    <Setter.Value>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding Point.SeriesView.Title}" Margin="0,0,5,0"/>
+                                                <TextBlock Text="{Binding Point.SeriesView.Values[0]}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </lvc:PieChart.Resources>
+                        <lvc:PieChart.Series>
+                            <lvc:PieSeries Values="20" Title="压差" DataLabels="True" LabelPosition="OutsideSlice"/>
+                            <lvc:PieSeries Values="40" Title="振动" DataLabels="True" LabelPosition="OutsideSlice"/>
+                            <lvc:PieSeries Values="10" Title="设备温度" DataLabels="True" LabelPosition="OutsideSlice"/>
+                            <lvc:PieSeries Values="30" Title="光照" DataLabels="True" LabelPosition="OutsideSlice"/>
+                        </lvc:PieChart.Series>
+                    </lvc:PieChart>
+                </GroupBox>
+
 
             </Grid>
             
+            <!--第二行第三列-->
+            <UniformGrid Columns="1" Grid.Column="2">
+                <!--第二行第三列第一行 设备-->
+                <GroupBox Style="{StaticResource GroupBoxStyle}" Header="设备">
+                    <ItemsControl ItemsSource="{Binding DeviceList}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Columns="4" VerticalAlignment="Center"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Vertical" Margin="5">
+                                    <TextBlock FontSize="20" Foreground="Cyan" 
+                                Text="{Binding Value}" HorizontalAlignment="Center"/>
+                                    <TextBlock FontSize="12" Foreground="White" 
+                                Text="{Binding DeviceItem}" HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                </GroupBox>
+
+                <!--第二行第三列第二行 能耗-->
+                <GroupBox Style="{StaticResource GroupBoxStyle}" Header="能耗">
+                    <userControl:RaderUC ItemSource="{Binding RaderList}"/>
+                </GroupBox>
+                <GroupBox Style="{StaticResource GroupBoxStyle}" Header="人力">
+
+                </GroupBox>
+            </UniformGrid>
+
         </Grid>
+        
         
         
         <!--第三行-->

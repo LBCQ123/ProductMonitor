@@ -40,6 +40,9 @@ namespace ProductMonitor.ViewModels
         /// </summary>
         public BindingList<AlarmModel> AlarmList { get; set; }
 
+        public BindingList<DeviceModel> DeviceList { get; set; }
+
+        public List<RaderItemModel> RaderList { get; set; }
         #endregion
         public MainWindowVM()
         {
@@ -61,6 +64,29 @@ namespace ProductMonitor.ViewModels
                 new AlarmModel("03","设备转速过快","2023-11-23 18:34:56",12),
                 new AlarmModel("04","设备气压偏低","2023-11-23 18:34:56",90)
             };
+
+            DeviceList = new BindingList<DeviceModel>()
+            {
+                new DeviceModel("电能(kwh)",60.8),
+                new DeviceModel("电压(V)",390),
+                new DeviceModel("电流(A)",5),
+                new DeviceModel("压差(kpa)",13),
+                new DeviceModel("温度(℃)",36),
+                new DeviceModel("振动(mm/s)",4.1),
+                new DeviceModel("转速(r/min)",2600),
+                new DeviceModel("气压(kpa)",0.5)
+            };
+
+            RaderList = new List<RaderItemModel>()
+            {
+                new RaderItemModel("排烟风机",90),
+                new RaderItemModel("客梯",30),
+                new RaderItemModel("供水机",34),
+                new RaderItemModel("喷淋水泵",69),
+                new RaderItemModel("稳压设备",20),
+                new RaderItemModel("鼓风机",65)
+            };
+
 
         }
 
