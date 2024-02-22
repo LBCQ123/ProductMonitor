@@ -30,7 +30,7 @@
             </Grid.ColumnDefinitions>
             <!--第一行 日期-->
             <StackPanel Grid.Column="0" Orientation="Horizontal">
-                <TextBlock Text="{Binding TimeNow,StringFormat='HH:mm'}" Foreground="White" 
+                <TextBlock Text="{Binding TimeNow,StringFormat='HH:mm'}" Foreground="White"
                        d:Text="15:56"
                        FontSize="50" VerticalAlignment="Center"
                        FontFamily="../Resource/Fonts/#digital display"/>
@@ -279,8 +279,51 @@
                 <GroupBox Style="{StaticResource GroupBoxStyle}" Header="能耗">
                     <userControl:RaderUC ItemSource="{Binding RaderList}"/>
                 </GroupBox>
-                <GroupBox Style="{StaticResource GroupBoxStyle}" Header="人力">
 
+
+                <!--第二行第三列第三行 人力-->
+                <GroupBox Style="{StaticResource GroupBoxStyle}" Header="人力">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <!--第二行第三列第三行左列 在职在岗-->
+                        <StackPanel Grid.Column="0">
+                            <TextBlock Text="98" FontSize="40" Margin="20 20 20 0" Foreground="White"
+                                       HorizontalAlignment="Center"/>
+                            <TextBlock Text="在职在岗"  Foreground="#55ffffff"
+                                       HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                        </StackPanel>
+
+                        <!--第二行第三列第三行右列 缺岗统计-->
+                        <StackPanel Orientation="Vertical" Grid.Column="1" Margin="0 -15 0 0">
+                            <TextBlock Text="缺岗统计" Foreground="Cyan" Margin="10 0 0 5" FontSize="16"/>
+                            <ItemsControl ItemsSource="{Binding StaffOutWorkList}">
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="15"/>
+                                                <ColumnDefinition Width="55"/>
+                                                <ColumnDefinition Width="55"/>
+                                                <ColumnDefinition/>
+                                            </Grid.ColumnDefinitions>
+                                            <Ellipse Width="5" Height="5" Fill="Yellow" VerticalAlignment="Center"/>
+                                            <TextBlock Text="{Binding StaffName}" Grid.Column="1" FontSize="14" Foreground="#55ffffff"/>
+                                            <TextBlock Text="{Binding StaffPosition}" Grid.Column="2" FontSize="14" Foreground="#55ffffff"/>
+                                            <StackPanel Orientation="Horizontal" Grid.Column="3">
+                                                <Rectangle  Width="{Binding DisplayWidth}" Fill="#aa2bedf1" Height="5" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                                <TextBlock Text="{Binding OutWorkCount}" FontSize="14" Foreground="#55ffffff" Margin="5 0" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+                        </StackPanel>
+
+                    </Grid>
                 </GroupBox>
             </UniformGrid>
 
@@ -289,7 +332,79 @@
         
         
         <!--第三行-->
-        
-        
+        <ItemsControl Grid.Row="2" ItemsSource="{Binding WorkShopList}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="4"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="10 5 10 5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="5"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <!--第一行-->
+                        <Border Grid.Row="0" BorderThickness="0 1 0 0" BorderBrush="LightCyan"/>
+                        <!--第二行-->
+                        <TextBlock Text="{Binding WorkShopName}" Grid.Row="1" HorizontalAlignment="Left"  FontSize="16" Foreground="Cyan"/>
+                        <TextBlock Grid.Row="1" FontSize="16" HorizontalAlignment="Right">
+                            <Hyperlink Foreground="White" TextDecorations="None" Command="{Binding ShowDetailCmd,RelativeSource={RelativeSource AncestorType=Window}}">
+                                [详情]
+                            </Hyperlink>
+                        </TextBlock>
+                        <!--第三行 内容-->
+                        <Grid Grid.Row="2">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel Margin="20" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                <TextBlock Margin="0 00 0 10" Text="机台总数" FontSize="12" Foreground="White" HorizontalAlignment="Center"/>
+                                <TextBlock Text="{Binding TotalCount}" FontSize="26" Foreground="White" HorizontalAlignment="Center"/>
+                            </StackPanel>
+
+                            <UniformGrid Columns="1" Grid.Column="1">
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding WorkingCount}" Foreground="Cyan" FontSize="14"
+                                           HorizontalAlignment="Center"/>
+                                    <TextBlock Text="作业"  Foreground="#66ffffff" 
+                                           HorizontalAlignment="Center"/>
+                                </StackPanel>
+
+                                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
+                                    <TextBlock Text="{Binding WrongingCount}" Foreground="Red" FontSize="14"
+                                           HorizontalAlignment="Center"/>
+                                    <TextBlock Text="故障" Foreground="#66ffffff"
+                                           HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </UniformGrid>
+
+
+                            <UniformGrid Columns="1" Grid.Column="2">
+                                <StackPanel HorizontalAlignment="Center"  VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding WaitingCount}"  Foreground="Orange" FontSize="14"
+                                           HorizontalAlignment="Center"/>
+                                    <TextBlock Text="等待"  Foreground="#66ffffff"
+                                           HorizontalAlignment="Center"/>
+                                </StackPanel>
+
+                                <StackPanel HorizontalAlignment="Center"  VerticalAlignment="Top">
+                                    <TextBlock Text="{Binding StopingCount}"  Foreground="#66ffffff" FontSize="14"
+                                           HorizontalAlignment="Center"/>
+                                    <TextBlock Text="停机"  Foreground="#66ffffff"
+                                           HorizontalAlignment="Center"/>
+                                </StackPanel>
+                            </UniformGrid>
+                        </Grid>
+                    </Grid>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
     </Grid>
 </UserControl>

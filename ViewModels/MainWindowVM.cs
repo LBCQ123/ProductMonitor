@@ -17,7 +17,7 @@ namespace ProductMonitor.ViewModels
 
 
 
-        #region MonitorUC
+        #region MonitorUC数据
         /// <summary>
         /// 当前显示时间
         /// </summary>
@@ -34,19 +34,29 @@ namespace ProductMonitor.ViewModels
         /// <summary>
         /// 环境监控数据
         /// </summary>
-        public BindingList<EnviromentModel> EnviromentList { get; set; }
+        [ObservableProperty]
+        private List<EnviromentModel> enviromentList;
         /// <summary>
         /// 报警记录
         /// </summary>
-        public BindingList<AlarmModel> AlarmList { get; set; }
+        [ObservableProperty]
+        private List<AlarmModel> alarmList;
 
-        public BindingList<DeviceModel> DeviceList { get; set; }
+        [ObservableProperty]
+        private List<DeviceModel> deviceList;
 
-        public List<RaderItemModel> RaderList { get; set; }
+        [ObservableProperty]
+        private List<RaderItemModel> raderList;
+
+        [ObservableProperty]
+        private List<StaffOutWorkModel> staffOutWorkList;
+
+        [ObservableProperty]
+        private List<WorkShopModel> workShopList;
         #endregion
         public MainWindowVM()
         {
-            EnviromentList = new BindingList<EnviromentModel>
+            EnviromentList = new List<EnviromentModel>
             {
                 new EnviromentModel("光照(Lux)", "123"),
                 new EnviromentModel("噪音(db)", "55"),
@@ -57,7 +67,7 @@ namespace ProductMonitor.ViewModels
                 new EnviromentModel("氮气(PPM)", "223")
             };
 
-            AlarmList = new BindingList<AlarmModel>()
+            AlarmList = new List<AlarmModel>()
             {
                 new AlarmModel("01","设备温度过高","2023-11-23 18:34:56",7),
                 new AlarmModel("02","车间温度过高","2023-11-23 18:34:56",10),
@@ -65,7 +75,7 @@ namespace ProductMonitor.ViewModels
                 new AlarmModel("04","设备气压偏低","2023-11-23 18:34:56",90)
             };
 
-            DeviceList = new BindingList<DeviceModel>()
+            DeviceList = new List<DeviceModel>()
             {
                 new DeviceModel("电能(kwh)",60.8),
                 new DeviceModel("电压(V)",390),
@@ -87,7 +97,22 @@ namespace ProductMonitor.ViewModels
                 new RaderItemModel("鼓风机",65)
             };
 
+            StaffOutWorkList = new List<StaffOutWorkModel>()
+            {
+                new StaffOutWorkModel("张晓婷","技术员",123),
+                new StaffOutWorkModel("李晓","技术员",45),
+                new StaffOutWorkModel("王克俭","技术员",6),
+                new StaffOutWorkModel("陈家栋","技术员",50),
+                new StaffOutWorkModel("杨过","工程师",10)
+            };
 
+            WorkShopList = new List<WorkShopModel>()
+            {
+                new WorkShopModel("贴片车间",32,8,4,0),
+                new WorkShopModel("封装车间",20,7,3,0),
+                new WorkShopModel("焊接车间",68,6,2,0),
+                new WorkShopModel("冷却车间",72,5,1,0)
+            };
         }
 
 
