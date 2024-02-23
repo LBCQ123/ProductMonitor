@@ -17,7 +17,7 @@
         <model:MainWindowVM/>
     </Window.DataContext>
     
-    <Grid>
+    <Grid Margin="0">
         <Grid.Background>
             <LinearGradientBrush>
                 <GradientStop Color="#FF285173" Offset="0"/>
@@ -27,7 +27,7 @@
         </Grid.Background>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition />
             <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
         <!--第一层 表头-->
@@ -57,8 +57,8 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <StackPanel Grid.Row="0" HorizontalAlignment="Right" Orientation="Horizontal">
-                        <Button Style="{StaticResource OperateBtnStyle}" Background="#243547" Content="&#xe6bf;"/>
-                        <Button Style="{StaticResource OperateBtnStyle}" Background="#243547" Content="&#xe621;"/>
+                        <Button Style="{StaticResource OperateBtnStyle}" Background="#243547" Content="&#xe6bf;" x:Name="Btn_Minimized" Click="Btn_Minimized_Click"/>
+                        <Button Style="{StaticResource OperateBtnStyle}" Background="#243547" Content="&#xe621;" x:Name="Btn_Max" Click="Btn_Max_Click"/>
                         <Button Style="{StaticResource OperateBtnStyle}" Background="DarkRed" Content="&#xe600;"
                                 Click="Btn_Close"/>
                     </StackPanel>

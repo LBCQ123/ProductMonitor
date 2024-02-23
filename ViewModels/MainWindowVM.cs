@@ -53,6 +53,10 @@ namespace ProductMonitor.ViewModels
 
         [ObservableProperty]
         private List<WorkShopModel> workShopList;
+
+        [ObservableProperty]
+        private List<MachineModel> machineList;
+
         #endregion
         public MainWindowVM()
         {
@@ -112,6 +116,31 @@ namespace ProductMonitor.ViewModels
                 new WorkShopModel("封装车间",20,7,3,0),
                 new WorkShopModel("焊接车间",68,6,2,0),
                 new WorkShopModel("冷却车间",72,5,1,0)
+            };
+
+            MachineList = new List<MachineModel>()
+            {
+                new MachineModel("机台1","生产中",13,18,"Orderqkje231"),
+                new MachineModel("机台2","生产中",20,200,"Orderqkje231"),
+                new MachineModel("机台3","生产中",30,200,"Orderqkje231"),
+                new MachineModel("机台4","生产中",40,200,"Orderqkje231"),
+                new MachineModel("机台5","生产中",50,200,"Orderqkje231"),
+                new MachineModel("机台6","生产中",60,200,"Orderqkje231"),
+                new MachineModel("机台7","生产中",70,200,"Orderqkje231"),
+                new MachineModel("机台8","生产中",80,200,"Orderqkje231"),
+                new MachineModel("机台9","生产中",90,200,"Orderqkje231"),
+                new MachineModel("机台10","生产中",100,200,"Orderqkje231"),
+                new MachineModel("机台12","生产中",110,200,"Orderqkje231"),
+                new MachineModel("机台13","生产中",120,200,"Orderqkje231"),
+                new MachineModel("机台14","生产中",130,200,"Orderqkje231"),
+                new MachineModel("机台15","生产中",140,200,"Orderqkje231"),
+                new MachineModel("机台16","生产中",150,200,"Orderqkje231"),
+                new MachineModel("机台17","生产中",160,200,"Orderqkje231"),
+                new MachineModel("机台18","生产中",170,200,"Orderqkje231"),
+                new MachineModel("机台19","生产中",180,200,"Orderqkje231"),
+                new MachineModel("机台20","生产中",190,200,"Orderqkje231"),
+                new MachineModel("机台21","生产中",200,200,"Orderqkje231"),
+                new MachineModel("机台22","生产中",0,200,"Orderqkje231")
             };
         }
 

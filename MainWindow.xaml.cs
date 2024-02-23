@@ -1,6 +1,7 @@
 ﻿using ProductMonitor.OpCommand;
 using ProductMonitor.UserControls;
 using ProductMonitor.ViewModels;
+using ProductMonitor.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,7 +44,7 @@ namespace ProductMonitor
 
                 //动画效果
                 //位移 移动时间
-                ThicknessAnimation thicknessAnimation = new ThicknessAnimation(new Thickness(0,50,0,-50),
+                ThicknessAnimation thicknessAnimation = new ThicknessAnimation(new Thickness(0,200,0,-50),
                     new Thickness(0,0,0,0),new TimeSpan(0,0,0,0,400));
 
                 //透明度
@@ -81,7 +82,7 @@ namespace ProductMonitor
 
                 //动画效果
                 //位移 移动时间
-                ThicknessAnimation thicknessAnimation = new ThicknessAnimation(new Thickness(0, 50, 0, -50),
+                ThicknessAnimation thicknessAnimation = new ThicknessAnimation(new Thickness(0, 200, 0, -50),
                     new Thickness(0, 0, 0, 0), new TimeSpan(0, 0, 0, 0, 400));
 
                 //透明度
@@ -109,7 +110,30 @@ namespace ProductMonitor
             }
         }
 
+        private void Btn_Minimized_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
 
+        private void Btn_Max_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState= WindowState.Maximized;
+        }
+
+        private void ShowSettingsWin()
+        {
+            SettingsWin win = new SettingsWin();
+            win.Owner = this;
+            win.ShowDialog();
+        }
+        
+        public Command ShowSettingsCmd
+        {
+            get
+            {
+                return new Command(ShowSettingsWin);
+            }
+        }
 
     }
 }

@@ -1,0 +1,79 @@
+﻿<Window x:Class="ProductMonitor.Views.SettingsWin"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProductMonitor.Views"
+        mc:Ignorable="d"
+        Title="系统配置信息" Height="450" Width="800"
+        WindowStartupLocation="CenterOwner" 
+        FontFamily="Microsoft Yahei" 
+        FontWeight="ExtraLight"
+        ResizeMode="NoResize"
+        Background="White">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome GlassFrameThickness="-1"/>
+    </WindowChrome.WindowChrome>
+
+    <Window.Resources>
+        <Style TargetType="RadioButton">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="RadioButton">
+                        <Border Background="{TemplateBinding Background}" Padding="5">
+                            <TextBlock Text="{TemplateBinding Content}" Margin="5 0 0 0"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Background" Value="LightBlue"/>
+                                <Setter Property="Foreground" Value="White"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
+    
+    <Grid TextBlock.FontSize="16" Margin="5">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.2*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        
+        <!--第一行-->
+        <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Left">
+            <Run Text="&#xe604;" FontFamily="../Resource/Fonts/#iconfont"/>
+            <Run Text="{Binding Path=Title,RelativeSource={RelativeSource AncestorType=Window}}"/>
+        </TextBlock>
+        <!--<Button Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                Content="AAA" FontFamily="../Resource/Fonts/#iconfont" 
+                HorizontalAlignment="Right" BorderThickness="0"
+                Click="Btn_Close_Click"
+                Width="30"
+                />-->
+        <Button Content="&#xe600;" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Right" 
+                Click="Btn_Close_Click" FontFamily="../Resource/Fonts/#iconfont"
+                Background="Transparent" BorderThickness="0" WindowChrome.IsHitTestVisibleInChrome="True"/>
+        
+        <!--第二行第一列-->
+        <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Vertical" Margin="10 20">
+            <RadioButton Content="设备清单" IsChecked="True"/>
+            <RadioButton Content="环境监测"/>
+            <RadioButton Content="设备监测"/>
+            <RadioButton Content="配置一"/>
+            <RadioButton Content="配置二"/>
+        </StackPanel>
+
+        <Border Grid.Row="1" Grid.Column="0" BorderThickness="0 0 1 0" BorderBrush="#333"/>
+
+        <!--第二行第二列-->
+        <!--<Button Content="aaa" Grid.Column="1" Grid.Row="1" Click="Btn_Close_Click"/>-->
+    </Grid>
+</Window>

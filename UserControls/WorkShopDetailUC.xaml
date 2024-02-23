@@ -5,12 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ProductMonitor.UserControls"
              xmlns:usercontrols="clr-namespace:ProductMonitor.UserControls"
+             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              mc:Ignorable="d" 
-             Height="675" Width="1200"
+             d:Height="675" d:Width="1200"
              d:Background="#FF285173">
 
     <UserControl.Resources>
-        <Style TargetType="RadioButton" x:Key="EquipmentState">
+        <Style TargetType="RadioButton">
             <Setter Property="VerticalAlignment" Value="Center"/>
             <Setter Property="Background" Value="#ddd"/>
             <Setter Property="Foreground" Value="#888"/>
@@ -18,7 +19,7 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="RadioButton">
-                        <Border Name="border" Padding="10 5 10 5" Background="{TemplateBinding Background}" BorderBrush="#888" BorderThickness="1 1 0 1">
+                        <Border Name="border" Padding="10 5 10 5" Background="{TemplateBinding Background}" BorderBrush="#888" BorderThickness="1 1 1 1">
                             <ContentPresenter/>
                         </Border>
                         <ControlTemplate.Triggers>
@@ -45,16 +46,142 @@
                     FontSize="16" Margin="5" Command="{Binding GoBackCmd,RelativeSource={RelativeSource AncestorType=Window}}"/>
             <StackPanel DockPanel.Dock="Right" VerticalAlignment="Center" Orientation="Horizontal" Margin="0 0 10 0">
                 <TextBlock VerticalAlignment="Center" Text="机台状态:" Foreground="White" FontSize="16" Margin="0 0 5 0"/>
-                <RadioButton Content="全部" Style="{StaticResource EquipmentState}" IsChecked="True"/>
-                <RadioButton Content="作业" Style="{StaticResource EquipmentState}"/>
-                <RadioButton Content="等待" Style="{StaticResource EquipmentState}"/>
-                <RadioButton Content="故障" Style="{StaticResource EquipmentState}"/>
-                <RadioButton Content="停机" Style="{StaticResource EquipmentState}"/>
+                <RadioButton Content="全部" IsChecked="True"/>
+                <RadioButton Content="作业"/>
+                <RadioButton Content="等待"/>
+                <RadioButton Content="故障"/>
+                <RadioButton Content="停机"/>
             </StackPanel>
             
         </DockPanel>
         
         <!--第二行-->
-        <usercontrols:RingUC Width="100" Height="100" Grid.Row="1" Percent="20"/>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding MachineList}" Grid.Row="1">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="5" Margin="10" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="10 0 10 10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="5"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <!--第一行-->
+                            <Border Grid.Row="0" BorderThickness="0 1 0 0" BorderBrush="AliceBlue"/>
+                            <!--第二行-->
+                            <TextBlock FontSize="16" Foreground="White" Grid.Row="1"  HorizontalAlignment="Left">
+                                
+                                <Run Text="&#xe630;" FontFamily="../Resource/Fonts/#iconfont"/>
+                                <Run Text="{Binding MachineName}"/>
+                            </TextBlock>
+                            <TextBlock FontSize="16" Foreground="White" Grid.Row="1"  HorizontalAlignment="Right">
+                                <Run Text="&#xea9f;" FontFamily="../Resource/Fonts/#iconfont" Foreground="Green"/>
+                                <Run Text="{Binding Status}"/>
+                            </TextBlock>
+
+                            <!--第三行-->
+                            <usercontrols:RingUC Grid.Row="2" Percent="{Binding Percent}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                            <!--第四行-->
+                            <TextBlock FontSize="16" Foreground="White" Grid.Row="3">
+                            <Run Text="任务状态:" Foreground="#55ffffff"/>
+                            <Run Text="{Binding Status}"/>
+                            </TextBlock>
+                            <TextBlock FontSize="16" Foreground="White" HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="3">
+                                <Hyperlink TextDecorations="None" Command="{Binding DetailShowCmd,RelativeSource={RelativeSource AncestorType=local:WorkShopDetailUC}}">
+                                    详情
+                                </Hyperlink>
+                            </TextBlock>
+
+                            <!--第五航-->
+                            <TextBlock FontSize="16" Foreground="White" Grid.Row="4">
+                            <Run Text="任务进度:" Foreground="#55ffffff"/>
+                            <Run Text="{Binding FinishedCount}"/>
+                            <Run Text="/"/>
+                            <Run Text="{Binding PlanCount}"/>
+                            </TextBlock>
+
+                            <!--第六行-->
+                            <TextBlock FontSize="16" Foreground="White" Grid.Row="5">
+                            <Run Text="工单:" Foreground="#55ffffff"/>
+                            <Run Text="{Binding OrderNo}"/>
+                            </TextBlock>
+
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <Border x:Name="detail" Grid.RowSpan="2" Background="#22000000" Visibility="Collapsed">
+            <Border x:Name="detailContent" Background="#f5f7f9fa" VerticalAlignment="Bottom" BorderBrush="#aa3bedf1" BorderThickness="0 1 0 0">
+                <Grid Height="350" Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="30"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <!--第一行-->
+                    <TextBlock Grid.Row="0" HorizontalAlignment="Left" Text="机台效率趋势图"  FontSize="16" VerticalAlignment="Center"/>
+                    <Button Grid.Row="0" HorizontalAlignment="Right" Background="Transparent" BorderThickness="0" FontSize="16" 
+                            VerticalAlignment="Center" Content="&#xe600;" FontFamily="../Resource/Fonts/#iconfont"
+                            Command="{Binding DetailHideCmd,RelativeSource={RelativeSource AncestorType=local:WorkShopDetailUC}}"/>
+                    
+                    <!--第二行-->
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Left">
+                        <Border Width="7" Height="7" Background="LightGreen" Margin="20 0 5 0"/>
+                        <TextBlock Text="作业" />
+                        <Border Width="7" Height="7" Background="Orange" Margin="20 0 5 0"/>
+                        <TextBlock Text="等待" />
+                        <Border Width="7" Height="7" Background="PaleVioletRed" Margin="20 0 5 0"/>
+                        <TextBlock Text="故障" />
+                        <Border Width="7" Height="7" Background="LightGray" Margin="20 0 5 0"/>
+                        <TextBlock Text="停机" />
+                    </StackPanel>
+
+                    <StackPanel Grid.Row="1" Orientation="Horizontal" VerticalAlignment="Center" Margin="40 0" HorizontalAlignment="Right">
+                        <RadioButton Content="当日" IsChecked="True"/>
+                        <RadioButton Content="当周"/>
+                        <RadioButton Content="当月"/>
+                        <RadioButton Content="当年"/>
+                    </StackPanel>
+
+                    <!--第三行-->
+                    <lvc:CartesianChart Grid.Row="2" Margin="10">
+                        <lvc:CartesianChart.AxisX>
+                            <lvc:Axis Labels="23-01,23-02,23-03,23-04,23-05,23-06">
+                                <lvc:Axis.Separator>
+                                    <lvc:Separator Step="1" StrokeThickness="0"/>
+                                </lvc:Axis.Separator>
+                            </lvc:Axis>
+                        </lvc:CartesianChart.AxisX>
+                        <lvc:CartesianChart.AxisY>
+                            <lvc:Axis MinValue="0" MaxValue="100">
+                                <lvc:Axis.Separator>
+                                    <lvc:Separator Stroke="#08000000"/>
+                                </lvc:Axis.Separator>
+                            </lvc:Axis>
+                        </lvc:CartesianChart.AxisY>
+                        <lvc:CartesianChart.Series>
+                            <lvc:StackedColumnSeries Values="10,20,30,40,50,60" Title="作业"  Fill="LightGreen"/>
+                            <lvc:StackedColumnSeries Values="5 ,15,20,30, 7, 9" Title="等待"     Fill="Orange"/>
+                            <lvc:StackedColumnSeries Values="30,50,30,40,20,20" Title="故障"  Fill="PaleVioletRed"/>
+                            <lvc:StackedColumnSeries Values="55,15,20,0,13,11" Title="停机"  Fill="LightGray"/>
+                        </lvc:CartesianChart.Series>
+                    </lvc:CartesianChart>
+                    
+
+                </Grid>
+            </Border>
+        </Border>
+        
     </Grid>
 </UserControl>

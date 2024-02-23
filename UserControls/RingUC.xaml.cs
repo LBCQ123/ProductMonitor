@@ -62,8 +62,6 @@ namespace ProductMonitor.UserControls
 
         private void Drag()
         {
-            PTitle.Text = Percent.ToString();
-
             //调整大小（正方形）
             double size = Math.Min(RenderSize.Width, RenderSize.Height);
             LayGrid.Height = size;
@@ -72,30 +70,35 @@ namespace ProductMonitor.UserControls
             if (size == 0)
                 return; 
 
-            E1.Width = size - 10;
-            E1.Height = size - 10;
-            E1.SetValue(Canvas.LeftProperty, 5.0);
-            E1.SetValue(Canvas.TopProperty, 5.0);
-
-            E2.Width = size - 20;
-            E2.Height = size - 20;
-            E2.SetValue(Canvas.LeftProperty, 10.0);
-            E2.SetValue(Canvas.TopProperty, 10.0);
-
             PathGeometry path = new PathGeometry();
-
             PathFigure figure = new PathFigure();
-            figure.StartPoint = new Point(50, 10);
-            figure.Segments.Add(new LineSegment(new Point(50,5 + 10), false));
 
-            figure.Segments.Add(new ArcSegment(new Point(80, 50), new Size(40, 40), 0, false, SweepDirection.Clockwise, false));
-           
-            figure.Segments.Add(new LineSegment(new Point(90, 50), false));
-            figure.Segments.Add(new ArcSegment(new Point(50, 10), new Size(50, 50), 0, false, SweepDirection.Counterclockwise, false));
+            double radius = 37;
+            figure.StartPoint = new Point(50, 50- radius);
 
+            
+            double rr = -Math.PI / 2 + Percent % 100 /100.0 * 2 * Math.PI;
+            double x = 50 + radius * Math.Cos(rr);
+            double y = 50 + radius * Math.Sin(rr);
+
+            if(Percent %100 == 0 && Percent >= 100) 
+            {
+                rr = - Math.PI / 2 + 99.9 % 100 / 100.0 * 2 * Math.PI;
+                x = 50 + radius * Math.Cos(rr);
+                y = 50 + radius * Math.Sin(rr);
+                figure.Segments.Add(new ArcSegment(new Point(x, y), new Size(radius, radius), 0, Percent > 50, SweepDirection.Clockwise, true));
+            }
+            else
+            {
+                figure.Segments.Add(new ArcSegment(new Point(x, y), new Size(radius, radius), 0, Percent > 50, SweepDirection.Clockwise, true));
+            }
+            
 
             path.Figures.Add(figure);
             E3.Data = path;
+
+            text.SetValue(Canvas.LeftProperty, 50 - text.ActualWidth / 2 - 10);
+            text.SetValue(Canvas.TopProperty, 50 - text.ActualHeight / 2);
 
             //E3.Data
         }
