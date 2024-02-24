@@ -1,0 +1,23 @@
+﻿<Page x:Class="ProductMonitor.Views.SettingPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ProductMonitor.Views"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="SettingPage" FontSize="30">
+
+    <StackPanel Orientation="Vertical">
+        <TextBlock x:Name="data1" Text="设备清单"/>
+        <Border Height="200" Background="LightPink"/>
+        <TextBlock x:Name="data2" Text="环境监测"/>
+        <Border Height="200" Background="LightPink"/>
+        <TextBlock x:Name="data3" Text="设备监测"/>
+        <Border Height="200" Background="LightPink"/>
+        <TextBlock x:Name="data4" Text="配置一"/>
+        <Border Height="200" Background="LightPink"/>
+        <TextBlock x:Name="data5" Text="配置二"/>
+        <Border Height="200" Background="LightPink"/>
+    </StackPanel>
+</Page>

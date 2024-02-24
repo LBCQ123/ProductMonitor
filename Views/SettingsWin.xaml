@@ -64,16 +64,18 @@
         
         <!--第二行第一列-->
         <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Vertical" Margin="10 20">
-            <RadioButton Content="设备清单" IsChecked="True"/>
-            <RadioButton Content="环境监测"/>
-            <RadioButton Content="设备监测"/>
-            <RadioButton Content="配置一"/>
-            <RadioButton Content="配置二"/>
+            <RadioButton Tag="data1" Checked="RadioButton_Checked" Content="设备清单" IsChecked="True"/>
+            <RadioButton Tag="data2" Checked="RadioButton_Checked" Content="环境监测"/>
+            <RadioButton Tag="data3" Checked="RadioButton_Checked" Content="设备监测"/>
+            <RadioButton Tag="data4" Checked="RadioButton_Checked" Content="配置一"/>
+            <RadioButton Tag="data5" Checked="RadioButton_Checked" Content="配置二"/>
         </StackPanel>
 
         <Border Grid.Row="1" Grid.Column="0" BorderThickness="0 0 1 0" BorderBrush="#333"/>
 
         <!--第二行第二列-->
-        <!--<Button Content="aaa" Grid.Column="1" Grid.Row="1" Click="Btn_Close_Click"/>-->
+        <ScrollViewer Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Hidden">
+            <Frame x:Name="frame" Source="pack://application:,,,/Views/SettingPage.xaml" NavigationUIVisibility="Hidden"/>
+        </ScrollViewer>
     </Grid>
 </Window>

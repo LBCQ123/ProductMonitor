@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -27,6 +28,17 @@ namespace ProductMonitor.Views
         private void Btn_Close_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void RadioButton_Checked(object sender, RoutedEventArgs e)
+        {
+            if(frame == null)
+                return;
+            if(sender is RadioButton rd)
+            {
+                string? tag = rd.Tag.ToString();
+                frame.Navigate(new Uri($"pack://application:,,,/Views/SettingPage.xaml#{tag}"));
+            }
         }
     }
 }
